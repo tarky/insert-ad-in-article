@@ -39,6 +39,9 @@ function insert_ad($content){
 	if($ad_num > 5){
 		$ad_num = 5;
 	}
+  if($ad_num < 1){
+		$ad_num = 1;
+	}
 
 	$content = mb_convert_encoding($content, 'HTML-ENTITIES', 'auto');
 	$dom = new DOMDocument;
@@ -46,17 +49,17 @@ function insert_ad($content){
 	$xpath = new DOMXPath($dom);
 	$headers = $xpath->query("//h2|//h3");
 	$h_count = $headers->length - 1;
-
 	$intrvl = floor($h_count / $ad_num);
+
 	$ad_code = file_get_contents( get_stylesheet_directory_uri().'/ad-in-article.html');
-  $ad_code = '<p style="text-align:center;">スポンサーリンク</p>'.$ad_code;
+  $ad_code = '<p style="text-align:center;padding-bottom:0.5em;">スポンサーリンク</p><p>'.$ad_code.'</p>';
 
   foreach ( $headers as $i => $h ) {
 		if ($i == 0){
 			continue;
 		}
 		if($ad_num == 1){
-			if($i == ($h_count+1)/2){
+			if($i == floor(($h_count+1)/2)){
 				$ad = $dom->createCDATASection($ad_code);
 				$h->parentNode->insertBefore($ad, $h);
 			}
