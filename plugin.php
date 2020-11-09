@@ -70,5 +70,5 @@ function insert_ad($content){
 			}
 		}
   }
-	return $dom->saveHTML();
+	return preg_replace('/<p>(\s*)(<img .*\/?>)(\s*)<\/p>/iU', '\2', $dom->saveHTML());
 }
